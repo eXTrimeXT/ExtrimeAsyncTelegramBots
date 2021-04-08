@@ -16,12 +16,12 @@
 
 # Установка для Windows 10:
 
-## Активировать sub-system linux:
-*Открываем PowerShell от имени админа и пишем: "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
-*Перезагрузка 
-*Идем в Microsoft Store
-*В поиске пишем: Kali Linux
-*Скачиваем Kali Linux и готово!
+## Активировать subsystem linux:
+* Открываем PowerShell от имени админа и пишем: "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
+* Перезагрузка 
+* Идем в Microsoft Store
+* В поиске пишем: Kali Linux
+* Скачиваем Kali Linux и готово!
 
 Настраиваем терминал(оболочка Kali Linux):
 *) Открываем Kali
