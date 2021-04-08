@@ -24,8 +24,8 @@
 * Скачиваем `Kali Linux` и готово!
 
 ## Настраиваем терминал(оболочка Kali Linux):
-* Открываем Kali
-* ТЫ должен создать пользователя(он создаётся при первом запуске)
+* Открываем `Kali Linux`
+* Ты должен создать пользователя(он создаётся при первом запуске)
 * Пишем имя и пароль(2раза)
 * Далее обновляем всю систему Linux: 
 * `sudo apt update && sudo apt full-upgrade && sudo apt autoremove && sudo apt clean`
@@ -36,8 +36,8 @@
 * Или если пишет что-то про время, то просто ждём **:(**
 * При этом **ТЕРМИНАЛ ДОЛЖЕН БЫТЬ ОТКРЫТЫМ!!!**
 
-Пример ошибки со временем, ждать нужно 2 часа 44 минуты
-`E: Release file for http://http.kali.org/kali/dists/kali-rolling/InRelease is not valid yet (invalid for another 2h 43min 10s). Updates for this repository will not be applied.`
+* Пример ошибки со временем, ждать нужно 2 часа 44 минуты
+* `E: Release file for http://http.kali.org/kali/dists/kali-rolling/InRelease is not valid yet (invalid for another 2h 43min 10s). Updates for this repository will not be applied.`
 
 ### **Без обновления системы дальше не читай, сначала ты должен ОБНОВИТЬ СИСТЕМУ!!!**
 
