@@ -7,7 +7,7 @@
 1) СМС-АКТИВЕЙТ: https://sms-activate.ru/ru/ 
 2) GitHub: https://github.com/
 3) Крипто-кошелек для LTC - https://payeer.com/
-3) Прокси, если нужно: https://proxy6.net/
+3) Прокси, если нужно: https://proxy6.net/ Какой прокси нужен: "IPv4 Shared"
 
 
 Для Windows 10:
