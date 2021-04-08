@@ -1,24 +1,27 @@
 # ExtrimeAsyncTelegramBots
 
+## Важные моменты
+
 В качывках ("") написаны команды, их(кавычки) писать не нужно!!!
 Чтобы что-то скопировать или вставить в ТЕРМИНАЛ используй НЕ ctrl+V, а правую кнопку мыши!!!
 Когда загрузка обновления или скачивания остановится на строчке: 'Do you want to continue? [Y/n]', Напиши "y", и жми Enter !!!
 
-Где нужно зарегистрироваться?:
-1) СМС-АКТИВЕЙТ: https://sms-activate.ru/ru/ 
-2) GitHub: https://github.com/
-3) Крипто-кошелек для LTC - https://payeer.com/
-3) Прокси, если нужно: https://proxy6.net/
+## Где нужно зарегистрироваться?:
+
+1) `СМС-АКТИВЕЙТ`: https://sms-activate.ru/ru/ 
+2) `GitHub`: https://github.com/
+3) `Крипто-кошелек для LTC`: - https://payeer.com/
+3) `Прокси, если нужно`: https://proxy6.net/
 
 
-Для Windows 10:
+# Установка для Windows 10:
 
-Активировать sub-system linux:
-*) Открываем PowerShell от имени админа и пишем: "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
-*) Перезагрузка 
-*) Идем в Microsoft Store
-*) В поиске пишем: Kali Linux
-*) Скачиваем Kali Linux и готово!
+## Активировать sub-system linux:
+*Открываем PowerShell от имени админа и пишем: "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
+*Перезагрузка 
+*Идем в Microsoft Store
+*В поиске пишем: Kali Linux
+*Скачиваем Kali Linux и готово!
 
 Настраиваем терминал(оболочка Kali Linux):
 *) Открываем Kali
