@@ -42,7 +42,8 @@
 ### **Без обновления системы дальше не читай, сначала ты должен ОБНОВИТЬ СИСТЕМУ!!!**
 
 ## Устанавливаем все необходимые требования:
-`sudo apt install git nano python3 python3-pip`
+* Скачиваем все необходимые программы: 
+* `sudo apt install git nano python3 python3-pip`
 
 * Открываем файл '.bashrc':
 `nano .bashrc`
