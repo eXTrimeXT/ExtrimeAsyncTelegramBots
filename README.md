@@ -1,4 +1,5 @@
 # ExtrimeAsyncTelegramBots
+![Alt Text](https://github.com/eXTrimeXT/ExtrimeAsyncTelegramBots/blob/main/EATB.jpeg)
 
 ## Где нужно зарегистрироваться?:
 
