@@ -27,18 +27,19 @@
 * Открываем Kali
 * ТЫ должен создать пользователя(он создаётся при первом запуске)
 * Пишем имя и пароль(2раза)
-* Далее обновляем всю систему Linux: `sudo apt update && sudo apt full-upgrade && sudo apt autoremove && sudo apt clean`
+* Далее обновляем всю систему Linux: 
+* `sudo apt update && sudo apt full-upgrade && sudo apt autoremove && sudo apt clean`
 
 #### Если пишет ошибку, то пишем: 
-`sudo apt --fix-broken install`
-перезаходим в Linux...
-#### Или если пишет что-то про время, то просто ждём :(
-при этом **ТЕРМИНАЛ ДОЛЖЕН БЫТЬ ОТКРЫТЫМ!!!**
+* `sudo apt --fix-broken install`
+* Перезаходим в Linux...
+* Или если пишет что-то про время, то просто ждём **:(**
+* При этом **ТЕРМИНАЛ ДОЛЖЕН БЫТЬ ОТКРЫТЫМ!!!**
 
 Пример ошибки со временем, ждать нужно 2 часа 44 минуты
 `E: Release file for http://http.kali.org/kali/dists/kali-rolling/InRelease is not valid yet (invalid for another 2h 43min 10s). Updates for this repository will not be applied.`
 
-### Без обновления системы дальше не читай, сначала ты должен ОБНОВИТЬ СИСТЕМУ!!!
+### **Без обновления системы дальше не читай, сначала ты должен ОБНОВИТЬ СИСТЕМУ!!!**
 
 ## Устанавливаем все необходимые требования:
 `sudo apt install git nano python3 python3-pip`
