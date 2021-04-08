@@ -36,7 +36,7 @@
 * Или если пишет что-то про время, то просто ждём **:(**
 * При этом **ТЕРМИНАЛ ДОЛЖЕН БЫТЬ ОТКРЫТЫМ!!!**
 
-* Пример ошибки со временем, ждать нужно 2 часа 44 минуты
+#### Пример ошибки со временем, ждать нужно 2 часа 44 минуты
 * `E: Release file for http://http.kali.org/kali/dists/kali-rolling/InRelease is not valid yet (invalid for another 2h 43min 10s). Updates for this repository will not be applied.`
 
 ### **Без обновления системы дальше не читай, сначала ты должен ОБНОВИТЬ СИСТЕМУ!!!**
