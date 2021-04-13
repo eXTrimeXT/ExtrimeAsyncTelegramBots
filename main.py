@@ -5,34 +5,37 @@ from selenium.webdriver.support import expected_conditions as EC
 from telethon import sync, events, TelegramClient
 from colorama import init, Fore, Style
 from datetime import datetime
-import urllib.request
+import urllib.request, requests
 import subprocess, sys
-import time
-import sqlite3
+import time, pytz, os
 import re
-import requests
-import pytz
-import os
 import asyncio
 from conf import *
 from registration import *
 
 init()
 
-
+# Создаем экземпляр клиента
 async def client_authorization(_account_number):
     _account_number -= 1
-    print(f"Очередь аккаунта № {Accounts[_account_number][0]}")
-    phone = Accounts[_account_number][1]
-    session = str(".anon" + str(_account_number+1))
-    # client = TelegramClient(session, api_id, api_hash, proxy=("http", proxy[1][0], proxy[1][1]))
-    # print(f"{_account_number+1}: "+ "Прокси: " + Fore.RED +"128.199.254.103:" + str(23352) + Fore.GREEN)
-    # client = TelegramClient(session, api_id, api_hash, proxy=("http", "128.199.254.103", 23352))
-    client = TelegramClient(session, api_id, api_hash)
-    print(f"Входим в аккаунт: {phone}")
-    return client
+    try:
+        print(f"Очередь аккаунта № {Accounts[_account_number][0]}")
+        phone = Accounts[_account_number][1]
+        print(f"Входим в аккаунт: {phone}")
+    except Exception as e:
+        print(Fore.RED + "Ошибка индексации аккаунта" + Fore.YELLOW)
 
+    try:
+        # client = TelegramClient(session, api_id, api_hash, proxy=("http", proxy[1][0], proxy[1][1]))
+        # print(f"{_account_number+1}: "+ "Прокси: " + Fore.RED +"128.199.254.103:" + str(23352) + Fore.GREEN)
+        # client = TelegramClient(session, api_id, api_hash, proxy=("http", "128.199.254.103", 23352))
+        session = str(SESSION_NAME + str(_account_number+1))
+        client = TelegramClient(session, API_ID, API_HASH)
+        return client
+    except Exception as e:
+        print(Fore.RED + "Ошибка TelegramClient!" + Fore.YELLOW)
 
+# При каких условиях меняются аккаунты
 async def change_account(_account_number, no_tasks, cycle, count_bad_status_code):
     str_change_account = f"{_account_number}: Переходим на аккаунт {_account_number+1}. " + Fore.RED + "Причина:" + Fore.YELLOW
     if no_tasks >= 2:
@@ -48,11 +51,11 @@ async def change_account(_account_number, no_tasks, cycle, count_bad_status_code
         return True
     return False
 
-
+# Узнаём время в данный момент
 def get_now_time():
     return datetime.now(pytz.timezone('Europe/Moscow')).strftime('%Y-%m-%d %H:%M:%S')
 
-
+# Завершаём цикл
 async def ending(account_number, max_account_number, count, time_sleep):
     await asyncio.sleep(1)
     account_number += BOT_QUEUE
@@ -65,13 +68,13 @@ async def ending(account_number, max_account_number, count, time_sleep):
         await asyncio.sleep(60 * time_sleep)  # ждем 5 минут (60 * 5)
     return account_number, count
 
-
+# Главная функция - совмещает в себе все остальные функции, смотрит рекламу...
 async def run(_account_number, max_account_number, max_cycle, time_sleep):
     count = 0
     account_number = _account_number
     while True:
         count_good_status_code = 0  # кол-во статус кодок = 200
-        count_bad_status_code = 0  # кол-во статус кодов != 200
+        count_bad_status_code = 0  # кол-во статус кодов !=200, !=503
         cycle = 0  # кол-во циклов
         no_tasks = 0  # нет заданий уже
 
@@ -80,13 +83,7 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
 
         client = await client_authorization(account_number)
         await client.start()
-        print(Fore.GREEN + f"### {account_number}: Клиент вошёл ###" + Fore.YELLOW)  # или RESET
-
-        dlgs = await client.get_dialogs()
-        for dlg in dlgs:
-            if dlg.title == BOT_TITLE:
-                tegmo = dlg
-                # print("TEGMO = ", tegmo)
+        print(Fore.GREEN + f"### {account_number}: Клиент вошёл ###" + Fore.YELLOW)
         await client.send_message(BOT_TITLE, "🖥 Visit sites")
         await asyncio.sleep(30)
         while True:
@@ -96,20 +93,18 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
                 print(Fore.GREEN + f"{account_number}: Клиент отключился\n" + Fore.YELLOW)
                 break
 
-            msgs = await client.get_messages(tegmo, limit=1)
+            msgs = await client.get_messages(BOT_TITLE, limit=1)
             for mes in msgs:
                 if re.search(r'\bseconds to get your reward\b', mes.message):
                     print(Fore.GREEN + f"{account_number}: Найдена НАГРАДА!" + Fore.YELLOW)
                     str_a = str(mes.message).replace('You must stay on the site for', '')
-                    str_a = str_a.replace('seconds to get your reward.', '')
-                    waitin = int(str_a)
+                    waitin = int(str_a.replace('seconds to get your reward.', ''))
+                    # waitin = int(str_a)
                     print(f"{account_number}: Ждать придется: {waitin} секунд...")
                     await client.send_message(BOT_TITLE, "/visit")
                     await asyncio.sleep(3)
-                    msgs2 = await client.get_messages(tegmo, limit=1)
+                    msgs2 = await client.get_messages(BOT_TITLE, limit=1)
                     for mes2 in msgs2:
-                        button_data = mes2.reply_markup.rows[1].buttons[1].data
-                        message_id = mes2.id
                         print(f"{account_number}: Перехожу по ссылке")
                         await asyncio.sleep(2)
                         url_rec = messages[0].reply_markup.rows[0].buttons[0].url
@@ -119,7 +114,7 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
                         fp.close()
                         if re.search(r'\bSwitch to reCAPTCHA\b', mystr):
                             from telethon.tl.functions.messages import GetBotCallbackAnswerRequest
-                            resp = await client(GetBotCallbackAnswerRequest(BOT_TITLE, message_id, data = button_data))
+                            resp = await client(GetBotCallbackAnswerRequest(BOT_TITLE, mes2.id, data = mes2.reply_markup.rows[1].buttons[1].data))
                             await asyncio.sleep(2)
                             print(Fore.RED + f"{account_number}: КАПЧА!" + Fore.YELLOW)
 
@@ -138,17 +133,20 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
                     file_url = file_urls.read()
                     if file_url == url_rec:
                         print(Fore.RED + f"{account_number}: Найдено повторение ссылки!" + Fore.YELLOW)
-                        msgs2 = await client.get_messages(tegmo, limit=1)
+                        msgs2 = await client.get_messages(BOT_TITLE, limit=1)
                         for mes2 in msgs2:
-                            button_data = mes2.reply_markup.rows[1].buttons[1].data
-                            message_id = mes2.id
                             from telethon.tl.functions.messages import GetBotCallbackAnswerRequest
-                            resp = await client(GetBotCallbackAnswerRequest(tegmo, message_id, data = button_data))
-                            await asyncio.sleep(2)
+                            resp = await client(GetBotCallbackAnswerRequest(BOT_TITLE, mes2.id, data = mes2.reply_markup.rows[1].buttons[1].data))
+                        await asyncio.sleep(2)
                     else:
-                        status_code = str(requests.get(url_rec).json)
-                        status_code = status_code.replace("<bound method Response.json of <Response [", "")
-                        status_code = int(status_code.replace("]>>", ""))
+                        status_code = "НЕ ПОЛУЧЕН :("
+                        try:
+                            status_code = str(requests.get(url_rec).json)
+                            status_code = status_code.replace("<bound method Response.json of <Response [", "")
+                            status_code = int(status_code.replace("]>>", ""))  
+                        except Exception as e:
+                            raise e
+                            
                         if status_code == 200 or status_code == 503:
                             print(Fore.BLUE + f"{account_number}: Статус код = {status_code}" + Fore.YELLOW)
                             file_urls = open("urls.txt", 'w')
@@ -172,7 +170,7 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
 
         account_number, count = await ending(account_number, max_account_number, count, time_sleep)
 
-
+# Выводим LTC на наш криптокошелек(Payeer)
 async def withdraw(max_account_number):
     general_balance = 0  # переменная общего баланса
     coin = 0  # Счетчик баланса 
@@ -181,15 +179,9 @@ async def withdraw(max_account_number):
     for account_number in range(0, max_account_number):
         client = await client_authorization(account_number+1)  # авторизация бота
         await client.start()
-
-        dlgs = await client.get_dialogs()
-        for dlg in dlgs:
-            if dlg.title == BOT_TITLE:
-                tegmo = dlg
-
         await client.send_message(BOT_TITLE, "/balance")
         await asyncio.sleep(3)
-        msgs = await client.get_messages(tegmo, limit=1)
+        msgs = await client.get_messages(BOT_TITLE, limit=1)
         for mes in msgs:
             convert_coin = str(mes.message).replace('Available balance: ', '')
             coin = float(convert_coin.replace("LTC", ''))  # из строки вырезаем только число
@@ -218,7 +210,7 @@ async def withdraw(max_account_number):
         print(Fore.GREEN + "### Клиент отключился ###" + Fore.YELLOW)
         time.sleep(1)
     file_balance = open("balance.txt", "a")
-    file_balance.write(f"{get_now_time()}: {round(general_balance, 8)}")
+    file_balance.write(f"{get_now_time()}: {round(general_balance, 8)}\n")
     file_balance.close()
     print(Fore.GREEN + f"Общий баланс = {round(general_balance, 8)} LTC" + Fore.YELLOW)
 
