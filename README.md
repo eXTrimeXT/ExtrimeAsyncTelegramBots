@@ -74,7 +74,7 @@
 
 
 * Перемещаемся в домашнюю папку root-пользователя: "cd"
-* Открываем файл: "nano .bashrc"
+* Открываем файл: `nano .bashrc`
 * В конце файла пишем строчку:
 * `alias runbot="cd /mnt/буква_диска_с_МАЛЕНЬКОЙ_БУКВЫ/путь_до_папки_где_будет_находится_папка_ExtrimeAsyncTelegramBots/ExtrimeAsyncTelegramBots && python3 main.py"`
 * Сохраняем и выходим из nano: ctrl+s, потом ctrl+x
