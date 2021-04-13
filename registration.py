@@ -7,7 +7,7 @@ init()
 def create_session():
 	try:
 		number = int(input(Fore.YELLOW + "Введите номер аккаунта: "))
-		with TelegramClient(f'.anon{number}', api_id, api_hash) as client:
+		with TelegramClient(f'.anon{number}', API_ID, API_HASH) as client:
 		    client.loop.run_until_complete(client.send_message('me', 'Hello'))
 		print(Fore.GREEN + f"Сессия '.anon{number}' создана!")
 	except:
