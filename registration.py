@@ -1,6 +1,6 @@
 from telethon import TelegramClient
 from colorama import init, Fore
-from conf import api_id, api_hash
+from conf import *
 
 init()
 
