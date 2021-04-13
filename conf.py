@@ -12,7 +12,6 @@ BOT_TITLE += " Click Bot"
 
 BOT_QUEUE = 1  # *Сколько ботов будут работать одновременно*
 
-
 LTC_ADDRESS = "MQLRETwKE3P2ThYKMnfysgZ9G3M6VZNpoD"
 MINIMAL_BALANCE = 0.00100100  # Комиссия = 0.00000080
 
