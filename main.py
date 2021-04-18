@@ -11,6 +11,7 @@ import time, pytz, os
 import re
 import asyncio
 from conf import *
+from MyProxy import proxy
 from registration import *
 
 init()
@@ -26,11 +27,11 @@ async def client_authorization(_account_number):
         print(Fore.RED + "Ошибка индексации аккаунта" + Fore.YELLOW)
 
     try:
-        # client = TelegramClient(session, api_id, api_hash, proxy=("http", proxy[1][0], proxy[1][1]))
-        # print(f"{_account_number+1}: "+ "Прокси: " + Fore.RED +"128.199.254.103:" + str(23352) + Fore.GREEN)
-        # client = TelegramClient(session, api_id, api_hash, proxy=("http", "128.199.254.103", 23352))
         session = str(SESSION_NAME + str(_account_number+1))
+        # print(f"{_account_number+1}: "+ "Прокси: " + Fore.RED + f"{proxy[0][0]}:" + f"{proxy[0][1]}" + Fore.GREEN)
+        # client = TelegramClient(session, API_ID, API_HASH, proxy=("http", proxy[0][0], proxy[0][1]))
         client = TelegramClient(session, API_ID, API_HASH)
+        # client = TelegramClient(session, API_ID, API_HASH)
         return client
     except Exception as e:
         print(Fore.RED + "Ошибка TelegramClient!" + Fore.YELLOW)
@@ -128,24 +129,31 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
                 else:
                     await asyncio.sleep(4)
                     messages = await client.get_messages(BOT_NAME)
-                    url_rec = messages[0].reply_markup.rows[0].buttons[0].url
+                    url_rec = ""
+                    try:
+                        url_rec = messages[0].reply_markup.rows[0].buttons[0].url
+                    except:
+                        print(Fore.RED + f"{account_number}: Кнопка не найдена :(" + Fore.YELLOW)
                     file_urls = open("urls.txt")
                     file_url = file_urls.read()
                     if file_url == url_rec:
                         print(Fore.RED + f"{account_number}: Найдено повторение ссылки!" + Fore.YELLOW)
                         msgs2 = await client.get_messages(BOT_TITLE, limit=1)
                         for mes2 in msgs2:
-                            from telethon.tl.functions.messages import GetBotCallbackAnswerRequest
-                            resp = await client(GetBotCallbackAnswerRequest(BOT_TITLE, mes2.id, data = mes2.reply_markup.rows[1].buttons[1].data))
+                            try:
+                                from telethon.tl.functions.messages import GetBotCallbackAnswerRequest
+                                resp = await client(GetBotCallbackAnswerRequest(BOT_TITLE, mes2.id, data = mes2.reply_markup.rows[1].buttons[1].data))        
+                            except Exception as e:
+                                print(Fore.RED + "Таймаут на строке 144, Proxy?" + Fore.YELLOW)
                         await asyncio.sleep(2)
                     else:
                         status_code = "НЕ ПОЛУЧЕН :("
                         try:
-                            status_code = str(requests.get(url_rec).json)
+                            status_code = str(requests.get(url_rec, proxies={"http": f"http://{proxy[0][0]}:{proxy[0][1]}"}).json)
                             status_code = status_code.replace("<bound method Response.json of <Response [", "")
                             status_code = int(status_code.replace("]>>", ""))  
-                        except Exception as e:
-                            raise e
+                        except:
+                            print(Fore.RED + f"{account_number}: Прокси на что-то жалуется...")
                             
                         if status_code == 200 or status_code == 503:
                             print(Fore.BLUE + f"{account_number}: Статус код = {status_code}" + Fore.YELLOW)
@@ -194,25 +202,40 @@ async def withdraw(max_account_number):
                 await client.send_message(BOT_TITLE, LTC_ADDRESS)
                 out_coin = float(float(round(coin, 5)) - 0.00001)
                 print(Fore.RED + f"Выводим: {out_coin}" + Fore.YELLOW)
+                time.sleep(3)
+                await client.send_message(BOT_TITLE, str(out_coin))
+                time.sleep(3)                
+                await client.send_message(BOT_TITLE, "✅ Confirm")
+                time.sleep(3)
+                await client.send_message(BOT_TITLE, "🏠 Menu")
+                time.sleep(3)
 
                 file = open('withdraw.txt', "a")
                 file.write(f"Время: {get_now_time()}. Выводим {out_coin} LTC с аккаунта {Accounts[account_number][1]}\n")
                 file.close()
 
-                time.sleep(3)
-                await client.send_message(BOT_TITLE, str(out_coin))
-                time.sleep(3)
-                await client.send_message(BOT_TITLE, "✅ Confirm")
-                time.sleep(3)
-                await client.send_message(BOT_TITLE, "🏠 Menu")
-                time.sleep(3)
         await client.disconnect()
         print(Fore.GREEN + "### Клиент отключился ###" + Fore.YELLOW)
         time.sleep(1)
+    general_balance = round(general_balance, 8)
     file_balance = open("balance.txt", "a")
-    file_balance.write(f"{get_now_time()}: {round(general_balance, 8)}\n")
+    file_balance.write(f"{get_now_time()}: {general_balance}\n")
     file_balance.close()
-    print(Fore.GREEN + f"Общий баланс = {round(general_balance, 8)} LTC" + Fore.YELLOW)
+    print(Fore.GREEN + f"Общий баланс = {general_balance} LTC")
+    ltc_in_rub = round(general_balance * get_course_ltc(), 3)
+    print(f"В рублях это будет {ltc_in_rub}" + Fore.YELLOW)
+
+
+def get_course_ltc():
+    options = webdriver.ChromeOptions()  # настройки для браузера
+    options.add_argument('headless')  # для открытия headless-браузера(без окна)
+    browser = webdriver.Chrome(executable_path="./Chrome88", options=options)  # фоновый режим
+
+    browser.get("https://www.google.com/search?q=ltc&oq=ltc&aqs=chrome.0.35i39l2j0l3j0i1i10j0l4.519j0j1&sourceid=chrome&ie=UTF-8")
+    course = str(browser.find_element_by_xpath("/html/body/div[7]/div/div[9]/div[1]/div/div[2]/div[2]/div/div/div[1]/div/div/div/div/div[1]/div/div[1]/div[1]/div[2]/span[1]").text)
+    course = (course.replace(" ", "")).replace(",", ".")
+    print(Fore.GREEN + f"Курс LTC/RUB = 1/{course}")
+    return float(course)
 
 # Чисто для красоты, хочу чтобы глазу было приятно :D
 def console_picture():

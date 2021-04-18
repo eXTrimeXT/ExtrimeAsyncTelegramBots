@@ -1,1 +1,1 @@
-time_sleep = 10
+time_sleep = 40

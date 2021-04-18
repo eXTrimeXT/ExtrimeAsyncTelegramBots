@@ -7,4 +7,5 @@ urllib3
 pysqlite3
 bs4
 pytz
+asyncio
 PySocks

@@ -12,6 +12,7 @@ BOT_TITLE += " Click Bot"
 
 BOT_QUEUE = 1  # *Сколько ботов будут работать одновременно*
 
+
 LTC_ADDRESS = "MQLRETwKE3P2ThYKMnfysgZ9G3M6VZNpoD"
 MINIMAL_BALANCE = 0.00100100  # Комиссия = 0.00000080
 
@@ -20,10 +21,15 @@ MINIMAL_BALANCE = 0.00100100  # Комиссия = 0.00000080
 API_ID = 50322                                      # api id  ### DONT CHANGE! ###
 API_HASH = '9ff1a639196c0779c86dd661af8522ba'       # api hash
 
-# Ссылка на LTC бота: 
+# Почта для восстановления: 
+# hw060935@gmail.com
+# Рефералка для ботов: 
 # https://t.me/Litecoin_click_bot?start=kXh2R 
 
-# ["ID", "PHONE", "password"]
+# ["5", "+79606137893", "3055106", "10fb2dac961e4061dc2b8940362ae37b", "MQLRETwKE3P2ThYKMnfysgZ9G3M6VZNpoD", "extrimesystemadmin777666"],
+# Dont have a session
+
+# ["ID", "PHONE", API_ID", "API_HASH", "dogecoin", "litecoin", "password"]
 Accounts = (
-    ["1", "+390275", "пароль1"],
-    ["2", "+63509", "пароль2"],)
+    ["1", "+3203902", "пароль1"],
+    ["2", "+79435", "пароль2"],)

@@ -1,15 +1,16 @@
 from colorama import init, Fore, Style
 from main import *
 from conf import *
-from sleep import *
+from sleep import time_sleep
 import asyncio
 
 
 async def main():
     # Запланируйте три звонка * одновременно *:
-    await asyncio.gather(
-    	run(account_number, max_account_number, max_cycle, time_sleep),)
-    	# run(account_number+1, max_account_number, max_cycle, time_sleep),)
+    print(f"Одновременно будут работать {BOT_QUEUE} ботов!")
+    # runs = []
+    # for account_number in range (0, BOT_QUEUE):
+    await asyncio.gather(run(account_number, max_account_number, max_cycle, time_sleep))
 
 
 if __name__ == "__main__":
