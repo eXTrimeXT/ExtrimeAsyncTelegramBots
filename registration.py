@@ -2,7 +2,7 @@ from main import *
 
 def create_session():
 	try:
-		_account_number = int(input(Fore.YELLOW + "Введите номер аккаунта: "))
+		_account_number = int(input(Fore.YELLOW + "Введите номер аккаунта(1,2,3...): "))
 		session = str(SESSION_NAME + str(_account_number))
 		client = TelegramClient(session, API_ID, API_HASH)
 		client.start()

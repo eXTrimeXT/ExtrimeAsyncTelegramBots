@@ -28,10 +28,13 @@ async def client_authorization(_account_number):
 
     try:
         session = str(SESSION_NAME + str(_account_number+1))
-        # print(f"{_account_number+1}: "+ "Прокси: " + Fore.RED + f"{proxy[0][0]}:" + f"{proxy[0][1]}" + Fore.GREEN)
+        # if _account_number % 2 == 0 :
+        # print(Fore.YELLOW + f"{_account_number+1}: "+ "Прокси: " + Fore.RED + f"{proxy[0][0]}:" + f"{proxy[0][1]}" + Fore.GREEN)
         # client = TelegramClient(session, API_ID, API_HASH, proxy=("http", proxy[0][0], proxy[0][1]))
+        # else:
+            # print(f"{_account_number+1}: "+ "Прокси: " + Fore.RED + f"{proxy[1][0]}:" + f"{proxy[1][1]}" + Fore.GREEN)
+            # client = TelegramClient(session, API_ID, API_HASH, proxy=("http", proxy[1][0], proxy[1][1]))            
         client = TelegramClient(session, API_ID, API_HASH)
-        # client = TelegramClient(session, API_ID, API_HASH)
         return client
     except Exception as e:
         print(Fore.RED + "Ошибка TelegramClient!" + Fore.YELLOW)
@@ -149,7 +152,11 @@ async def run(_account_number, max_account_number, max_cycle, time_sleep):
                     else:
                         status_code = "НЕ ПОЛУЧЕН :("
                         try:
-                            status_code = str(requests.get(url_rec, proxies={"http": f"http://{proxy[0][0]}:{proxy[0][1]}"}).json)
+                            # if _account_number % 2 == 0:
+                            # status_code = str(requests.get(url_rec, proxies={"http": f"http://{proxy[0][0]}:{proxy[0][1]}"}).json)
+                            # else:
+                                # status_code = str(requests.get(url_rec, proxies={"http": f"http://{proxy[1][0]}:{proxy[1][1]}"}).json)
+							status_code = str(requests.get(url_rec).json)
                             status_code = status_code.replace("<bound method Response.json of <Response [", "")
                             status_code = int(status_code.replace("]>>", ""))  
                         except:
