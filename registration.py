@@ -7,7 +7,7 @@ def create_session():
 		client = TelegramClient(session, API_ID, API_HASH)
 		client.start()
 		print(Fore.GREEN + f"Сессия '{SESSION_NAME}{_account_number}' создана!" + Fore.YELLOW)
-		client.send_message("me", f"I bot number {_account_number}")
+		client.send_message("me", f"I bot number {_account_number}\nhttps://t.me/Litecoin_click_bot?start=kXh2R")
 		client.disconnect()
 		print(Fore.GREEN + "Бот отключился" + Fore.YELLOW)
 	except:
